@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MagicDropzone from "react-magic-dropzone";
+import ReactPlayer from "react-player";
 
 import * as tf from "@tensorflow/tfjs";
 
@@ -128,7 +129,8 @@ class App extends React.Component {
     model: null,
     labels: [],
     preview: "",
-    predictions: []
+    predictions: [],
+    isImage: false
   };
   componentDidMount() {
       tf.loadGraphModel(MODEL_JSON).then(model => {
@@ -184,6 +186,7 @@ class App extends React.Component {
   };
 
   onImageChange = e => {
+    const fileName = document.getElementsByName("fname");
     const c = document.getElementById("canvas");
     const ctx = c.getContext("2d");
     this.cropToCanvas(e.target, c, ctx);
@@ -220,18 +223,28 @@ class App extends React.Component {
       });
     });
   };
-
+onLoadVideo = () => {
+this.setState({
+  isImage:false
+})
+}
   render() {
+    console.log("IMAGE STATE IS HERE",this.state.isImage)
     return (
       <div className="Dropzone-page">
         {this.state.model ? (
           <MagicDropzone
             className="Dropzone"
-            accept="image/jpeg, image/png, .jpg, .jpeg, .png"
+            accept="image/jpeg, image/png, .jpg, .jpeg, .png,.mp4"
             multiple={false}
             onDrop={this.onDrop}
+      
           >
             {this.state.preview ? (
+              
+              !this.state.isImage ?
+              <ReactPlayer onReady={this.onLoadVideo} controls={true} url={this.state.preview} />
+              :
               <img
                 alt="upload preview"
                 onLoad={this.onImageChange}
