@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import MagicDropzone from "react-magic-dropzone";
 import ReactPlayer from "react-player";
-
+import Header from './header'
 import * as tf from "@tensorflow/tfjs";
 
 import "./styles.css";
@@ -229,7 +229,11 @@ class App extends React.Component {
   };
   render() {
     return (
+               
+
+      
       <div className="Dropzone-page">
+      <Header/>
         {this.state.model ? (
           <MagicDropzone
             className="Dropzone"
@@ -241,6 +245,7 @@ class App extends React.Component {
                 onReady={this.onLoadVideo}
                 controls={true}
                 url={this.state.preview}
+                
               />
             ) : (
               "Choose or drop a file."
